@@ -2,6 +2,16 @@ import Typesense from 'typesense';
 import type { CollectionCreateSchema } from 'typesense/lib/Typesense/Collections';
 import booksData from './books.json';
 
+export interface Book {
+	title: string;
+	authors: string[];
+	publication_year: number;
+	id: string;
+	average_rating: number;
+	image_url: string;
+	ratings_count: number;
+}
+
 export function getTypesenseClient() {
 	/*
 	 *  Our JavaScript client library works on both the server and the browser.
@@ -50,10 +60,10 @@ export async function createBooksCollection() {
 export async function searchBooks(query: string, queryBy = 'title', sortBy = 'ratings_count:desc') {
 	const searchParameters = { q: query, query_by: queryBy, sort_by: sortBy };
 	const client = getTypesenseClient();
-	const result = await client.collections('books').documents().search(searchParameters);
+	const result = await client.collections<Book>('books').documents().search(searchParameters);
 	return result;
 }
 
 export function addBook() {
-	return 1;
+	// TODO
 }
