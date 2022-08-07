@@ -47,10 +47,11 @@ export async function createBooksCollection() {
 		default_sorting_field: 'ratings_count'
 	};
 	const client = getTypesenseClient();
-	try {
-		await client.collections('books').retrieve();
+	const collections = await client.collections().retrieve();
+	// console.log(collections);
+	if (collections.find((c) => c.name === 'books')) {
 		console.log('Books collection already exists, using that one');
-	} catch {
+	} else {
 		console.log('Books collection does not exist, so creating one now');
 		await client.collections().create(booksSchema);
 		await client.collections('books').documents().import(booksData);

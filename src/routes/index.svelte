@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { createBooksCollection, searchBooks, type Book } from '$lib/typesense';
+	import { onMount } from 'svelte';
 	import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 
 	// Create books collection if not already exists
-	createBooksCollection().catch(console.log);
+	onMount(() => createBooksCollection().then(() => (ready = true)));
+	let ready = false;
 
 	// Create to search input changes
 	let searchQuery = '';
@@ -11,8 +13,7 @@
 	async function search(q: string) {
 		searchResult = await searchBooks(q, 'title', 'ratings_count:desc');
 	}
-
-	$: search(searchQuery);
+	$: if (ready) search(searchQuery);
 </script>
 
 <div class="prose mx-auto">
