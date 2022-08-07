@@ -37,7 +37,9 @@
 		<div class="card card-side bg-base-100 shadow-xl flex-grow">
 			<figure><img src={hit.document.image_url || ''} alt="Movie" /></figure>
 			<div class="card-body">
-				<h2 class="card-title">{hit.document.title}</h2>
+				<h2 class="card-title">
+					{@html hit.highlights?.[0]?.snippet ?? hit.document.title}
+				</h2>
 				<p>{hit.document.authors}</p>
 				<p>{hit.document.publication_year}</p>
 
